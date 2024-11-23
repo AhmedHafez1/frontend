@@ -1,21 +1,15 @@
-mat-list-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 8px 0;
-}
-
 .mat-mdc-card {
-  margin: 32px 256px;
-  padding: 16px;
+  margin: 25px 256px 10px;
+  padding: 16px 16px 0;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: white;
 }
 
 .mat-mdc-card-header {
-  background-color: #eee;
+  background-color: #f0f0f0f0;
   display: flex;
   padding: 16px;
-  margin: 0 16px;
+  margin: 8px 16px;
   font-weight: 600;
   font-family: var(
     --mat-table-header-headline-font,
@@ -33,11 +27,11 @@ table {
 }
 
 .mat-mdc-header-cell {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
-  color: rgb(24, 0, 130);
+  color: rgb(29, 1, 153);
 }
 
 .mat-mdc-cell {
-  font-size: 17px;
+  font-size: 15px;
 }
