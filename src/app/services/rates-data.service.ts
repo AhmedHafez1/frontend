@@ -1,3 +1,4 @@
+import { RatesAdapter as RatesAdapterService } from './rates-adapter.service';
 import { Injectable, OnDestroy } from '@angular/core';
 
 import { BehaviorSubject, combineLatest, Subscription } from 'rxjs';
@@ -5,21 +6,21 @@ import { map, startWith } from 'rxjs/operators';
 import { SignalRClientService } from './signal-r-client.service';
 import { RatesApiService } from './rates-api-service';
 import { ExchangeRates } from '../models/exchange-rates.model';
+import { CurrencyRate } from '../models/currency-rate.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RatesDataService implements OnDestroy {
   private ratesSubscription: Subscription;
-  private combinedRatesSubject = new BehaviorSubject<ExchangeRates | null>(
-    null
-  );
+  private combinedRatesSubject = new BehaviorSubject<CurrencyRate[]>([]);
 
   public combinedRates$ = this.combinedRatesSubject.asObservable();
 
   constructor(
     private apiService: RatesApiService,
-    private signalRService: SignalRClientService
+    private signalRService: SignalRClientService,
+    private ratesAdapterService: RatesAdapterService
   ) {
     this.signalRService.startConnection();
 
@@ -34,7 +35,9 @@ export class RatesDataService implements OnDestroy {
           return signalRRates?.rates ? signalRRates : apiRates;
         })
       )
-      .subscribe((rates) => this.combinedRatesSubject.next(rates));
+      .subscribe((rates) =>
+        this.combinedRatesSubject.next(ratesAdapterService.mapRates(rates!))
+      );
   }
 
   ngOnDestroy(): void {
