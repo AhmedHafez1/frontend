@@ -1,0 +1,4 @@
+<ng-container *ngIf="rates$ | async as rates">
+  {{ rates | json }}
+</ng-container>
+<div *ngIf="!(rates$ | async)">Loading rates...</div>

@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class RatesApiService {
-  private readonly apiUrl = environment.apiUrl;
+  private readonly apiUrl = environment.apiUrl + 'api/currency';
 
   constructor(private http: HttpClient) {}
 
