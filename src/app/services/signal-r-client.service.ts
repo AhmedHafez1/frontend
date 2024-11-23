@@ -10,6 +10,8 @@ export class SignalRClientService {
   private hubConnection: signalR.HubConnection | null = null;
   private ratesSubject = new BehaviorSubject<ExchangeRates | null>(null);
 
+  rates$ = this.ratesSubject.asObservable();
+
   constructor() {}
 
   startConnection(): void {
