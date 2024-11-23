@@ -7,6 +7,12 @@ import { RatesDataService } from '../../services/rates-data.service';
   styleUrl: './exchange-rates.component.scss',
 })
 export class ExchangeRatesComponent {
+  public displayedColumns: string[] = [
+    'baseCurrency',
+    'toCurrency',
+    'rate',
+    'percentage',
+  ];
   public rates$ = this.ratesDataService.combinedRates$;
 
   constructor(private ratesDataService: RatesDataService) {}

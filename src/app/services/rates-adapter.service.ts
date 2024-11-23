@@ -10,15 +10,18 @@ export class RatesAdapter {
   public baseExchangeRates: ExchangeRates | null = null;
 
   public mapRates(exchangeRates: ExchangeRates): CurrencyRate[] {
-    const newCurrencyRates = Object.entries(exchangeRates.rates).map(
+    const newCurrencyRates = Object.entries(exchangeRates?.rates).map(
       ([currency, rate]) => {
         const previousRate = this.baseExchangeRates?.rates[currency] ?? rate;
+        const percentage = parseFloat(
+          (((rate - previousRate) / rate) * 100).toFixed(5)
+        );
         return <CurrencyRate>{
           baseCurrency: exchangeRates.base,
           toCurrency: currency,
           rate,
-          percentage: ((rate - previousRate) / rate) * 100,
-          color: this.getColorCode(rate - previousRate),
+          percentage,
+          color: this.getColorCode(percentage),
         };
       }
     );
@@ -28,10 +31,10 @@ export class RatesAdapter {
     return newCurrencyRates;
   }
 
-  private getColorCode(change: number) {
-    return change > 0
+  private getColorCode(percentage: number) {
+    return percentage > 0
       ? ColorCode.GREEN
-      : change < 0
+      : percentage < 0
       ? ColorCode.RED
       : ColorCode.GRAY;
   }

@@ -2,7 +2,7 @@ import { RatesAdapter as RatesAdapterService } from './rates-adapter.service';
 import { Injectable, OnDestroy } from '@angular/core';
 
 import { BehaviorSubject, combineLatest, Subscription } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { filter, map, startWith } from 'rxjs/operators';
 import { SignalRClientService } from './signal-r-client.service';
 import { RatesApiService } from './rates-api-service';
 import { ExchangeRates } from '../models/exchange-rates.model';
@@ -33,7 +33,8 @@ export class RatesDataService implements OnDestroy {
         map(([apiRates, signalRRates]) => {
           // Merge API rates with SignalR updates
           return signalRRates?.rates ? signalRRates : apiRates;
-        })
+        }),
+        filter((rates) => Boolean(rates))
       )
       .subscribe((rates) =>
         this.combinedRatesSubject.next(ratesAdapterService.mapRates(rates!))

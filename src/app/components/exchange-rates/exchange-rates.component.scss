@@ -1,0 +1,43 @@
+mat-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px 0;
+}
+
+.mat-mdc-card {
+  margin: 32px 256px;
+  padding: 16px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.mat-mdc-card-header {
+  background-color: #eee;
+  display: flex;
+  padding: 16px;
+  margin: 0 16px;
+  font-weight: 600;
+  font-family: var(
+    --mat-table-header-headline-font,
+    var(--mat-app-title-small-font, Roboto, sans-serif)
+  );
+}
+
+table {
+  width: 100%;
+}
+
+.mat-mdc-header-cell,
+.mat-mdc-cell {
+  text-align: center;
+}
+
+.mat-mdc-header-cell {
+  font-size: 16px;
+  font-weight: 500;
+  color: rgb(24, 0, 130);
+}
+
+.mat-mdc-cell {
+  font-size: 17px;
+}
