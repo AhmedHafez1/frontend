@@ -1,10 +1,10 @@
 import { RatesAdapterService as RatesAdapterService } from './rates-adapter.service';
 import { Injectable, OnDestroy } from '@angular/core';
 
-import { BehaviorSubject, merge, Subscription } from 'rxjs';
-import { filter, map, startWith } from 'rxjs/operators';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { SignalRClientService } from './signal-r-client.service';
-import { RatesApiService } from './rates-api-service';
+import { RatesApiService } from './rates-api.service';
 import { CurrencyRate } from '../models/currency-rate.model';
 
 @Injectable({
