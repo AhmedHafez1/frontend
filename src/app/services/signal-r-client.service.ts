@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class SignalRClientService implements OnDestroy {
-  private readonly wsUrl = environment.apiUrl + 'ws/rates';
+  private readonly wsUrl = environment.signalRUrl + 'ws/rates';
   private readonly maxRetries = 5;
   private retryCount = 0;
   private hubConnection: signalR.HubConnection | null = null;
