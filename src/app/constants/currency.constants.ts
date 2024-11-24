@@ -1,14 +1,1 @@
-export const Currencies = [
-  'YER',
-  'EGP',
-  'SAR',
-  'DZD',
-  'QAR',
-  'USD',
-  'EUR',
-  'OMR',
-  'JOD',
-  'KWD',
-  'MAD',
-  'JPY',
-];
+export const Currencies = ['YER', 'EGP', 'EUR', 'USD', 'KWD', 'JPY'];

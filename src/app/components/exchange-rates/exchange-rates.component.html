@@ -1,7 +1,17 @@
 <ng-container *ngIf="rates$ | async as rates">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Currency Exchange Rates</mat-card-title>
+      <mat-card-title>
+        <h6>Currency Exchange Rates</h6>
+      </mat-card-title>
+      <div>
+        <h6 *ngIf="lastUpdatedDate$ | async as date">
+          Last Updated On
+          <span class="updated-date">{{
+            date | date : "EEEE, MMMM d, y, h:mm a"
+          }}</span>
+        </h6>
+      </div>
       <!-- Select Menu for Base Currency -->
       <mat-form-field appearance="fill" class="currency-select">
         <mat-label>Select Base Currency</mat-label>

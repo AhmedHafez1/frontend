@@ -1,4 +1,4 @@
-import { RatesAdapter as RatesAdapterService } from './rates-adapter.service';
+import { RatesAdapterService as RatesAdapterService } from './rates-adapter.service';
 import { Injectable, OnDestroy } from '@angular/core';
 
 import { BehaviorSubject, merge, Subscription } from 'rxjs';
@@ -12,7 +12,9 @@ import { CurrencyRate } from '../models/currency-rate.model';
 })
 export class RatesDataService implements OnDestroy {
   private ratesSubscription!: Subscription;
-  private combinedRatesSubject = new BehaviorSubject<CurrencyRate[]>([]);
+  private combinedRatesSubject = new BehaviorSubject<
+    [CurrencyRate[], Date | null]
+  >([[], null]);
 
   public combinedRates$ = this.combinedRatesSubject.asObservable();
 
@@ -31,7 +33,9 @@ export class RatesDataService implements OnDestroy {
   public fetchRates(baseCurrency: string): void {
     this.apiService
       .getRates(baseCurrency)
-      .pipe(map(this.ratesAdapterService.mapRates))
+      .pipe(
+        map((exchangeRates) => this.ratesAdapterService.mapRates(exchangeRates))
+      )
       .subscribe({
         next: (rates) => this.combinedRatesSubject.next(rates),
         error: (err) => console.error('Failed to fetch rates from API:', err),
@@ -41,7 +45,9 @@ export class RatesDataService implements OnDestroy {
   private subscribeToRealTimeRates() {
     this.ratesSubscription = this.signalRService.rates$
       .pipe(filter((rates) => Boolean(rates)))
-      .pipe(map(this.ratesAdapterService.mapRates))
+      .pipe(
+        map((exchangeRates) => this.ratesAdapterService.mapRates(exchangeRates))
+      )
       .subscribe({
         next: (rates) => this.combinedRatesSubject.next(rates),
         error: (err) => console.error('Failed to fetch rates from API:', err),

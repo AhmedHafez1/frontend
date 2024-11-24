@@ -8,17 +8,29 @@
 .mat-mdc-card-header {
   background-color: #f0f0f0f0;
   display: flex;
-  padding: 16px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 16px 0;
   margin: 8px 16px;
   font-weight: 600;
   font-family: var(
     --mat-table-header-headline-font,
     var(--mat-app-title-small-font, Roboto, sans-serif)
   );
+
+  h6 {
+    font-size: 19px;
+  }
+
+  .updated-date {
+    color: darkgray;
+    font-style: italic;
+  }
 }
 
 table {
   width: 100%;
+  box-shadow: none;
 }
 
 .mat-mdc-header-cell,

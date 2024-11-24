@@ -6,10 +6,10 @@ import { ColorCode } from '../models/color-code.enum';
 @Injectable({
   providedIn: 'root',
 })
-export class RatesAdapter {
-  public baseExchangeRates: ExchangeRates | null = null;
+export class RatesAdapterService {
+  private baseExchangeRates: ExchangeRates | null = null;
 
-  public mapRates(exchangeRates: ExchangeRates | null): CurrencyRate[] {
+  public mapRates(exchangeRates: ExchangeRates | null): [CurrencyRate[], Date] {
     const newCurrencyRates = Object.entries(exchangeRates!.rates).map(
       ([currency, rate]) => {
         const previousRate = this.baseExchangeRates?.rates[currency] ?? rate;
@@ -28,7 +28,7 @@ export class RatesAdapter {
 
     this.baseExchangeRates ??= exchangeRates;
 
-    return newCurrencyRates;
+    return [newCurrencyRates, new Date(exchangeRates!.date!)];
   }
 
   private getColorCode(percentage: number) {
@@ -37,5 +37,9 @@ export class RatesAdapter {
       : percentage < 0
       ? ColorCode.RED
       : ColorCode.GRAY;
+  }
+
+  public resetBaseExchangeRates() {
+    this.baseExchangeRates = null;
   }
 }
