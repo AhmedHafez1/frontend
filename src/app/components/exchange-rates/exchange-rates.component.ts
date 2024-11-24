@@ -2,6 +2,7 @@ import { SignalRClientService } from './../../services/signal-r-client.service';
 import { Component } from '@angular/core';
 import { RatesDataService } from '../../services/rates-data.service';
 import { Currencies } from '../../constants/currency.constants';
+import { RatesApiService } from '../../services/rates-api-service';
 
 @Component({
   selector: 'app-exchange-rates',
@@ -9,7 +10,7 @@ import { Currencies } from '../../constants/currency.constants';
   styleUrl: './exchange-rates.component.scss',
 })
 export class ExchangeRatesComponent {
-  public selectedBaseCurrency = 'USD';
+  public selectedCurrency = 'USD';
   public displayedColumns: string[] = [
     'baseCurrency',
     'toCurrency',
@@ -23,10 +24,13 @@ export class ExchangeRatesComponent {
   constructor(
     private ratesDataService: RatesDataService,
     private signalRClientService: SignalRClientService
-  ) {}
+  ) {
+    ratesDataService.fetchRates(this.selectedCurrency);
+  }
 
   onBaseCurrencyChange(selectedCurrency: string): void {
     this.signalRClientService.subscribeToBaseCurrency(selectedCurrency);
-    this.selectedBaseCurrency = selectedCurrency;
+    this.ratesDataService.fetchRates(selectedCurrency);
+    this.selectedCurrency = selectedCurrency;
   }
 }

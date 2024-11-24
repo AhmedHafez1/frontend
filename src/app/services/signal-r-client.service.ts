@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import * as signalR from '@microsoft/signalr';
 import { ExchangeRates } from '../models/exchange-rates.model';
@@ -7,7 +7,7 @@ import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
-export class SignalRClientService {
+export class SignalRClientService implements OnDestroy {
   private readonly wsUrl = environment.apiUrl + 'ws/rates';
   private readonly maxRetries = 5;
   private retryCount = 0;
@@ -16,6 +16,14 @@ export class SignalRClientService {
   private selectedCurrency = 'USD';
 
   rates$ = this.ratesSubject.asObservable();
+
+  constructor() {
+    this.startConnection();
+  }
+
+  ngOnDestroy(): void {
+    this.stopConnection();
+  }
 
   startConnection(): void {
     this.hubConnection = new signalR.HubConnectionBuilder()

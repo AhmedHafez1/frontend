@@ -9,15 +9,15 @@ import { ColorCode } from '../models/color-code.enum';
 export class RatesAdapter {
   public baseExchangeRates: ExchangeRates | null = null;
 
-  public mapRates(exchangeRates: ExchangeRates): CurrencyRate[] {
-    const newCurrencyRates = Object.entries(exchangeRates?.rates).map(
+  public mapRates(exchangeRates: ExchangeRates | null): CurrencyRate[] {
+    const newCurrencyRates = Object.entries(exchangeRates!.rates).map(
       ([currency, rate]) => {
         const previousRate = this.baseExchangeRates?.rates[currency] ?? rate;
         const percentage = parseFloat(
           (((rate - previousRate) / rate) * 100).toFixed(5)
         );
         return <CurrencyRate>{
-          baseCurrency: exchangeRates.base,
+          baseCurrency: exchangeRates!.base,
           toCurrency: currency,
           rate,
           percentage,

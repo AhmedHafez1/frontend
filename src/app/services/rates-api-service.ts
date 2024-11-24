@@ -13,7 +13,7 @@ export class RatesApiService {
   constructor(private http: HttpClient) {}
 
   getRates(baseCurrency = 'USD'): Observable<ExchangeRates> {
-    const params = new HttpParams().append('base', baseCurrency);
+    const params = new HttpParams().append('baseCurrency', baseCurrency);
     return this.http.get<ExchangeRates>(this.apiUrl, { params });
   }
 }
