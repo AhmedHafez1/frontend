@@ -28,16 +28,14 @@ export class SignalRClientService {
     this.hubConnection.on('ConnectionEstablished', () => {
       console.log('Connection Established');
     });
-
-    // Join the default currency group on connection start
-    this.changeCurrencyPreference(this.selectedCurrency);
   }
 
   async start(): Promise<void> {
     try {
       await this.hubConnection?.start();
       console.log('SignalR Connected!');
-      this.retryCount = 0; // Reset retry count on successful connection
+      this.subscribeToBaseCurrency(this.selectedCurrency);
+      this.retryCount = 0;
     } catch (err) {
       console.error('SignalR Connection Error: ', err);
       if (this.retryCount < this.maxRetries) {
@@ -54,7 +52,7 @@ export class SignalRClientService {
       this.hubConnection.stop().then(() => {
         console.log('SignalR Connection Stopped.');
       });
-      this.hubConnection.off(this.selectedCurrency); // Remove listeners
+      this.hubConnection.off(this.selectedCurrency);
     }
   }
 
@@ -76,7 +74,7 @@ export class SignalRClientService {
       );
   }
 
-  changeCurrencyPreference(newCurrency: string): void {
+  subscribeToBaseCurrency(newCurrency: string): void {
     if (this.selectedCurrency) {
       // Unsubscribe from the old currency group
       this.leaveCurrencyGroup(this.selectedCurrency);

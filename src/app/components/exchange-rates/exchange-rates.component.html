@@ -2,6 +2,21 @@
   <mat-card>
     <mat-card-header>
       <mat-card-title>Currency Exchange Rates</mat-card-title>
+      <!-- Select Menu for Base Currency -->
+      <mat-form-field appearance="fill" class="currency-select">
+        <mat-label>Select Base Currency</mat-label>
+        <mat-select
+          [value]="selectedBaseCurrency"
+          (selectionChange)="onBaseCurrencyChange($event.value)"
+        >
+          <mat-option
+            *ngFor="let currency of baseCurrencyList"
+            [value]="currency"
+          >
+            {{ currency }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </mat-card-header>
     <mat-card-content>
       <table mat-table [dataSource]="rates" class="mat-elevation-z8">

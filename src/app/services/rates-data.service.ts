@@ -1,11 +1,10 @@
 import { RatesAdapter as RatesAdapterService } from './rates-adapter.service';
 import { Injectable, OnDestroy } from '@angular/core';
 
-import { BehaviorSubject, combineLatest, Subscription } from 'rxjs';
-import { filter, map, startWith } from 'rxjs/operators';
+import { BehaviorSubject, merge, Subscription } from 'rxjs';
+import { filter, startWith } from 'rxjs/operators';
 import { SignalRClientService } from './signal-r-client.service';
 import { RatesApiService } from './rates-api-service';
-import { ExchangeRates } from '../models/exchange-rates.model';
 import { CurrencyRate } from '../models/currency-rate.model';
 
 @Injectable({
@@ -24,20 +23,15 @@ export class RatesDataService implements OnDestroy {
   ) {
     this.signalRService.startConnection();
 
-    // Combine REST API and SignalR updates
-    this.ratesSubscription = combineLatest([
+    this.ratesSubscription = merge(
       this.apiService.getRates().pipe(startWith(null)),
-      this.signalRService.rates$,
-    ])
-      .pipe(
-        map(([apiRates, signalRRates]) => {
-          // Merge API rates with SignalR updates
-          return signalRRates?.rates ? signalRRates : apiRates;
-        }),
-        filter((rates) => Boolean(rates))
-      )
+      this.signalRService.rates$
+    )
+      .pipe(filter((rates) => Boolean(rates)))
       .subscribe((rates) =>
-        this.combinedRatesSubject.next(ratesAdapterService.mapRates(rates!))
+        this.combinedRatesSubject.next(
+          this.ratesAdapterService.mapRates(rates!)
+        )
       );
   }
 
