@@ -6,7 +6,7 @@
       </mat-card-title>
       <div>
         <h6 *ngIf="lastUpdatedDate$ | async as date">
-          Last Updated On
+          Last updated on
           <span class="updated-date">{{
             date | date : "EEEE, MMMM d, y, h:mm a"
           }}</span>
